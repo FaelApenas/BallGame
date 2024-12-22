@@ -55,6 +55,7 @@ void set_player(PLAYER_T *p) {
   p->player.height = 10;
   p->player.x = 520;
   p->player.y = 560;
-  p->playerVelocity = PLAYER_VELOCITY;
+  p->playerVelocity = 1;
+  p->playerAcc=1;
   p->playerDirection = 0;
 }

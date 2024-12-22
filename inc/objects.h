@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+
 typedef struct {
   Rectangle block;
   Rectangle Collisium;
@@ -22,7 +23,8 @@ typedef struct {
 typedef struct {
   Rectangle player;
   float playerVelocity;
-  int8_t playerDirection;
+  int8_t playerDirection; 
+  float playerAcc;
 
 } PLAYER_T;
 // Color greenBlock, blueBlock, brownBlock, grayBlock, orangeBlock;

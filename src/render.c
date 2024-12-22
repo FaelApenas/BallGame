@@ -9,23 +9,27 @@
  *
  */
 void Update(PLAYER_T *p, BRICKS_T b[], BALL_T *ball) {
+  #ifdef DEBUGMODE
+  DrawRectangleRec(ball->ballCollision, RED);
+  #endif
+
   uint8_t brick_check = 0;
   uint8_t brick_colided = 0;
   uint8_t player_colided = 0;
-
+  //Draw
   DrawRectangleRec(p->player, WHITE);
-  player_moviment(p);
-  ball_moviment(ball);
   DrawCircleV(ball->ballPosition, ball->ballRadius, WHITE);
-#ifdef DEBUGMODE
-  DrawRectangleRec(ball->ballCollision, RED);
 
-#endif
 
   for (int i = 0; i < TOTAL_OF_BLOCKS; i++) {
-    if (b[i].IsAlive) {
+    if(b[i].IsAlive) {
+    
       DrawRectangleRec(b[i].block, b[i].color);
-      brick_check = CheckCollisionRecs(b[i].block, ball->ballCollision);
+      
+      if(ball->ballPosition.y <HEIGHT/2) {
+        brick_check = CheckCollisionRecs(b[i].block, ball->ballCollision);
+      }
+      
       if (brick_check) {
         brick_colided = 1;
         b[i].IsAlive = 0;
@@ -33,9 +37,14 @@ void Update(PLAYER_T *p, BRICKS_T b[], BALL_T *ball) {
     }
   }
 
-  player_colided = CheckCollisionRecs(p->player, ball->ballCollision);
+  player_moviment(p);
+  ball_moviment(ball);
+  if (ball->ballPosition.y > HEIGHT/2)
+  {
+    player_colided = CheckCollisionRecs(p->player, ball->ballCollision);
+  } 
+  
   ball_collisium(ball, brick_colided, player_colided, p->playerDirection);
-  printf("%f\n", ball->ballAccX);
 }
 
 /*BALL COLLISIUM FUNCTION
@@ -70,8 +79,6 @@ void ball_collisium(BALL_T *ball, uint8_t brick_colided, uint8_t player_colided,
 
     if (ball->ballDirection[2] == 1) {
       ball->ballDirection[1] = ball->ballDirection[1] * -1;
-      //      ball->ballAccY += 0.3;
-      //      ball->ballAccX -= 0.1;
     }
     ball->ballDirection[2] = ball->ballDirection[2] * -1;
   }
@@ -106,14 +113,21 @@ void ball_moviment(BALL_T *ball) {
 void player_moviment(PLAYER_T *p) {
   int BARRIER_X_BEHIND = 10;
   int BARRIER_X_FRONT = WIDTH - 120 - 10; // WIDTH - PLAYER_WIDTH-10
+  if (p->playerAcc>1.8) {p->playerAcc=1.8;}
+  printf("%f\n",PLAYER_VELOCITY*p->playerAcc);
   if (IsKeyDown(KEY_RIGHT)) {
-    p->player.x += PLAYER_VELOCITY;
+    p->player.x += PLAYER_VELOCITY * p->playerAcc;
     p->playerDirection = 1;
+    p->playerAcc+=0.05;
+
   } else if (IsKeyDown(KEY_LEFT)) {
-    p->player.x -= PLAYER_VELOCITY;
+    p->player.x -= PLAYER_VELOCITY * p->playerAcc;
     p->playerDirection = -1;
+    p->playerAcc+=0.05;
+
   } else {
     p->playerDirection = 0;
+    p->playerAcc=1;
   }
 
   // BARRIER CHECK

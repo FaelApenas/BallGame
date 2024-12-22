@@ -3,7 +3,7 @@
 #define HEIGHT 580
 #define WIDTH 1040
 #define TOTAL_OF_BLOCKS 35
-#define PLAYER_VELOCITY 7.5f
+#define PLAYER_VELOCITY 6.5f
 #define MAX_ACC 1.8
 #define MIN_ACC 0.7
 // #define DEBUGMODE
