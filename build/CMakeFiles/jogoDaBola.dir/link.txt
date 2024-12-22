@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/jogoDaBola.dir/main.c.o CMakeFiles/jogoDaBola.dir/src/cam.c.o CMakeFiles/jogoDaBola.dir/src/objects.c.o CMakeFiles/jogoDaBola.dir/src/render.c.o -o jogoDaBola  -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 

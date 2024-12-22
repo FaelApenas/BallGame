@@ -1,0 +1,3 @@
+/home/rafael/Desktop/programagem/ll_game/build/CMakeFiles/jogoDaBola.dir
+/home/rafael/Desktop/programagem/ll_game/build/CMakeFiles/edit_cache.dir
+/home/rafael/Desktop/programagem/ll_game/build/CMakeFiles/rebuild_cache.dir
