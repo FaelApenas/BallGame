@@ -5,5 +5,5 @@
 #define TOTAL_OF_BLOCKS 35
 #define PLAYER_VELOCITY 6.5f
 #define MAX_ACC 1.8
-#define MIN_ACC 0.7
+#define MIN_ACC 0
 // #define DEBUGMODE

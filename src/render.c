@@ -8,42 +8,48 @@
  *
  *
  */
-void Update(PLAYER_T *p, BRICKS_T b[], BALL_T *ball) {
+void Update(PLAYER_T *p, BRICKS_T b[], BALL_T *ball,int *score) {
   #ifdef DEBUGMODE
   DrawRectangleRec(ball->ballCollision, RED);
   #endif
-
   uint8_t brick_check = 0;
   uint8_t brick_colided = 0;
   uint8_t player_colided = 0;
+
   //Draw
   DrawRectangleRec(p->player, WHITE);
   DrawCircleV(ball->ballPosition, ball->ballRadius, WHITE);
-
-
   for (int i = 0; i < TOTAL_OF_BLOCKS; i++) {
     if(b[i].IsAlive) {
-    
       DrawRectangleRec(b[i].block, b[i].color);
-      
-      if(ball->ballPosition.y <HEIGHT/2) {
-        brick_check = CheckCollisionRecs(b[i].block, ball->ballCollision);
-      }
-      
-      if (brick_check) {
-        brick_colided = 1;
-        b[i].IsAlive = 0;
-      }
     }
   }
 
   player_moviment(p);
-  ball_moviment(ball);
-  if (ball->ballPosition.y > HEIGHT/2)
+  ball_moviment(ball); 
+  
+  if (ball->ballPosition.y <HEIGHT/2) // Check brick collis
+  {
+    for (int i = 0; i < TOTAL_OF_BLOCKS; i++) 
+    {
+      if(b[i].IsAlive){ 
+        brick_check = CheckCollisionRecs(b[i].block, ball->ballCollision);
+        if (brick_check)
+        {
+          *score= *score+1;
+          brick_colided = 1;
+          b[i].IsAlive = 0;
+        }
+     }
+    }
+  }
+
+  
+  if (ball->ballPosition.y>HEIGHT/2)
   {
     player_colided = CheckCollisionRecs(p->player, ball->ballCollision);
   } 
-  
+  //*score = TOTAL_OF_BLOCKS-counter;
   ball_collisium(ball, brick_colided, player_colided, p->playerDirection);
 }
 
@@ -113,8 +119,10 @@ void ball_moviment(BALL_T *ball) {
 void player_moviment(PLAYER_T *p) {
   int BARRIER_X_BEHIND = 10;
   int BARRIER_X_FRONT = WIDTH - 120 - 10; // WIDTH - PLAYER_WIDTH-10
+
   if (p->playerAcc>1.8) {p->playerAcc=1.8;}
-  printf("%f\n",PLAYER_VELOCITY*p->playerAcc);
+  
+  //printf("%f\n",PLAYER_VELOCITY*p->playerAcc);
   if (IsKeyDown(KEY_RIGHT)) {
     p->player.x += PLAYER_VELOCITY * p->playerAcc;
     p->playerDirection = 1;

@@ -8,11 +8,18 @@
 #include <sys/types.h>
 #include <time.h>
 
+static const char *buttonTxt[]=
+{
+  "JOGAR",
+  "EXIT"
+}; 
+
 int main() {
+  int score= 0;
+
   srand(time(0));
   InitWindow(WIDTH, GAME_SCREEN_HEIGHT, "Aquele jogo la");
   // Defines
-  // Rectangle player = {520, 560, 120, 10};
   PLAYER_T player;
   BRICKS_T bricks[TOTAL_OF_BLOCKS];
   Camera2D camera = {0};
@@ -38,8 +45,9 @@ int main() {
       ball.ballPosition.y = HEIGHT / 2;
       ball.ballPosition.x = WIDTH / 2;
     }
-    Update(&player, bricks, &ball);
+    Update(&player, bricks, &ball,&score);
     DrawRectangleRec(hud_bar, WHITE);
+    DrawText(TextFormat("Score: %d",score),20,610,20,RED);
     EndMode2D();
     EndDrawing();
   }
